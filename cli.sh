@@ -49,6 +49,10 @@ function nginx-build() {
   server_ip_file=$GITLAB_DIR/SERVER_IP
   server_name_file=$GITLAB_DIR/SERVER_NAME
 
+  mkdir -p $OUT_DIR
+
+  cp src/* $OUT_DIR
+
   if [ -f $server_ip_file ]; then
     if [ -f $server_name_file ]; then
       mkdir -p $OUT_DIR/sites-enabled/
