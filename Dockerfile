@@ -12,7 +12,7 @@ ARG PORT_80
 ARG PORT_443
 
 # Build Nginx from source
-RUN apk --update add openssl-dev pcre-dev zlib-dev wget build-base
+RUN apk --update add openssl-dev pcre-dev zlib-dev build-base curl
 
 RUN curl -Ls http://nginx.org/download/nginx-${VERSION}.tar.gz | tar -xz -C /tmp && \
     cd /tmp/nginx-${VERSION} && \
