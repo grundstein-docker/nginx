@@ -7,7 +7,6 @@ HOSTS_DIR="$PWD/../magic/hosts"
 GITLAB_DIR="$PWD/../gitlab"
 
 source ./ENV.sh
-source ./IPS.sh
 source ../bin/tasks.sh
 
 echo "container: $CONTAINER_NAME"
