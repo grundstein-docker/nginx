@@ -84,8 +84,8 @@ function nginx-build() {
       mkdir -p $OUT_DIR/sites-enabled/
 
       sed \
-        -e "s/|SERVER_IP|/$(cat $server_ip_file)/g" \
-        -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
+        -e "s/|SERVER_IP|/$(cat $redmine_ip_file)/g" \
+        -e "s/|SERVER_NAME|/$(cat $redmine_name_file)/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/redmine
 
       echo "SUCCESS: redmine nginx config build finished"
