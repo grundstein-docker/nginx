@@ -61,7 +61,33 @@ function nginx-build() {
         -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/gitlab
 
-      echo "SUCCESS: nginx config build finished"
+      echo "SUCCESS: gitlab nginx config build finished"
+
+    else
+      echo "FAIL: $server_name_file does not exist"
+    fi
+
+  else
+    echo "FAIL: $server_ip_file does not exist"
+  fi
+
+  redmine__ip_file=$GITLAB_DIR/SERVER_IP
+  redmine_name_file=$GITLAB_DIR/SERVER_NAME
+
+  mkdir -p $OUT_DIR
+
+  cp $NGINX_SRC_DIR/* $OUT_DIR
+
+  if [ -f $redmine_ip_file ]; then
+    if [ -f $redmine_name_file ]; then
+      mkdir -p $OUT_DIR/sites-enabled/
+
+      sed \
+        -e "s/|SERVER_IP|/$(cat $server_ip_file)/g" \
+        -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
+        $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/redmine
+
+      echo "SUCCESS: redmine nginx config build finished"
 
     else
       echo "FAIL: $server_name_file does not exist"
