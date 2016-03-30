@@ -5,6 +5,7 @@ SRC_DIR="$PWD/src"
 NGINX_SRC_DIR="$SRC_DIR/nginx"
 HOSTS_DIR="$PWD/../magic/hosts"
 GITLAB_DIR="$PWD/../gitlab"
+REDMINE_DIR="$PWD/../redmine"
 
 source ./ENV.sh
 source ../../bin/tasks.sh
@@ -71,8 +72,8 @@ function nginx-build() {
     echo "FAIL: $server_ip_file does not exist"
   fi
 
-  redmine__ip_file=$GITLAB_DIR/SERVER_IP
-  redmine_name_file=$GITLAB_DIR/SERVER_NAME
+  redmine__ip_file=$REDMINE_DIR/SERVER_IP
+  redmine_name_file=$REDMINE_DIR/SERVER_NAME
 
   mkdir -p $OUT_DIR
 
