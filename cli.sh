@@ -59,7 +59,7 @@ function nginx-build() {
       sed \
         -e "s/|SERVER_IP|/$(cat $server_ip_file)/g" \
         -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
-        $GITLAB_DIR/nginx > $OUT_DIR/sites-enabled/gitlab
+        $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/gitlab
 
       echo "SUCCESS: nginx config build finished"
 
