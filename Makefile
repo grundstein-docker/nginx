@@ -2,12 +2,15 @@
 	all \
 	dev \
 	build \
+	magic-build \
+	nginx-build \
 	run \
 	debug \
 	logs \
 	rm \
 	stop \
-	backup \
+	ip \
+	clean \
 	help
 
 
@@ -43,6 +46,9 @@ stop:
 
 ip:
 	@./cli.sh ip
+
+clean:
+	@./cli.sh clean
 
 # help output
 help:

@@ -7,7 +7,7 @@ HOSTS_DIR="$PWD/../magic/hosts"
 GITLAB_DIR="$PWD/../gitlab"
 
 source ./ENV.sh
-source ../bin/tasks.sh
+source ../../bin/tasks.sh
 
 echo "container: $CONTAINER_NAME"
 
@@ -38,7 +38,7 @@ function run() {
     --name $CONTAINER_NAME \
     --publish $HOST_PORT_80:$CONTAINER_PORT_80 \
     --publish $HOST_PORT_443:$CONTAINER_PORT_443 \
-    --volume $PWD/logs:/home/nginx/logs \
+    --volume $PWD/logs:$TARGET_DIR/logs \
     $CONTAINER_NAME
 }
 
@@ -50,7 +50,7 @@ function nginx-build() {
 
   mkdir -p $OUT_DIR
 
-  cp src/* $OUT_DIR
+  cp $NGINX_SRC_DIR/* $OUT_DIR
 
   if [ -f $server_ip_file ]; then
     if [ -f $server_name_file ]; then
@@ -79,7 +79,7 @@ function magic-build() {
   for host_dir in $(ls $HOSTS_DIR); do \
     full_dir=$HOSTS_DIR/$host_dir
     if [ -d $full_dir ]; then
-      conf_file=$full_dir/nginx
+      conf_file=$SRC_DIR/sites-enabled/nginx
       if [ -f $conf_file ]; then
         out_file=$OUT_DIR/sites-enabled/$host_dir
         server_ip_file=$full_dir/SERVER_IP
@@ -93,10 +93,10 @@ function magic-build() {
             sed \
               -e "s/|SERVER_IP|/$(cat $server_ip_file)/g" \
               -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
-              $conf_file \
-              > $out_file
+              $conf_file > $out_file
 
             echo "SUCCESS: nginx magic host config build finished"
+
           else
             echo "FAIL: $server_name_file does not exist"
           fi
