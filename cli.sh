@@ -46,20 +46,25 @@ function run() {
 function nginx-build() {
   echo "building nginx config sources"
 
-  server_ip_file=$GITLAB_DIR/SERVER_IP
-  server_name_file=$GITLAB_DIR/SERVER_NAME
+  gitlab_ip_file=$GITLAB_DIR/SERVER_IP
+  gitlab_name_file=$GITLAB_DIR/SERVER_NAME
 
   mkdir -p $OUT_DIR
 
   cp $NGINX_SRC_DIR/* $OUT_DIR
 
-  if [ -f $server_ip_file ]; then
-    if [ -f $server_name_file ]; then
+  if [ -f $gitlab_ip_file ]; then
+    if [ -f $gitlab_name_file ]; then
       mkdir -p $OUT_DIR/sites-enabled/
 
+
+      gitlab_ip=$(cat $gitlab_ip_file)
+      gitlab_name=$(cat $gitlab_name_file)
+      echo "Build Gitlab config with IP: $gitlab_ip and NAME: $gitlab_name"
+
       sed \
-        -e "s/|SERVER_IP|/$(cat $server_ip_file)/g" \
-        -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
+        -e "s/|SERVER_IP|/$gitlab_ip/g" \
+        -e "s/|SERVER_NAME|/$gitlab_name/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/gitlab
 
       echo "SUCCESS: gitlab nginx config build finished"
@@ -72,7 +77,7 @@ function nginx-build() {
     echo "FAIL: $server_ip_file does not exist"
   fi
 
-  redmine__ip_file=$REDMINE_DIR/SERVER_IP
+  redmine_ip_file=$REDMINE_DIR/SERVER_IP
   redmine_name_file=$REDMINE_DIR/SERVER_NAME
 
   mkdir -p $OUT_DIR
@@ -83,9 +88,13 @@ function nginx-build() {
     if [ -f $redmine_name_file ]; then
       mkdir -p $OUT_DIR/sites-enabled/
 
+      redmine_ip=$(cat $redmine_ip_file)
+      redmine_name=$(cat $redmine_name_file)
+      echo "Build Redmine config with IP: $redmine_ip and NAME: $redmine_name"
+
       sed \
-        -e "s/|SERVER_IP|/$(cat $redmine_ip_file)/g" \
-        -e "s/|SERVER_NAME|/$(cat $redmine_name_file)/g" \
+        -e "s/|SERVER_IP|/$redmine_ip/g" \
+        -e "s/|SERVER_NAME|/$redmine_name/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/redmine
 
       echo "SUCCESS: redmine nginx config build finished"
