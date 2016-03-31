@@ -165,22 +165,6 @@ function clean() {
   echo-finished "cleanup"
 }
 
-function update() {
-  echo-start "git pull"
-
-  git pull
-
-  echo-finished "git pull"
-}
-
-function status() {
-  echo-start "status"
-
-  git status
-
-  echo-finished "status"
-}
-
 function help() {
   echo "\
 Container: $CONTAINER_NAME
