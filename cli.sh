@@ -154,9 +154,27 @@ function magic-build() {
 }
 
 function clean() {
-  echo "cleaning up"
+  echo "cleaning up $CONTAINER_NAME"
 
   rm -rf ./out
+
+  echo "cleanup finished"
+}
+
+function update() {
+  echo "git pull $CONTAINER_NAME"
+
+  git pull
+
+  echo "git pull $CONTAINER_NAME finished"
+}
+
+function status() {
+  echo "git status $CONTAINER_NAME"
+
+  git status
+
+  echo "finished git status for $CONTAINER_NAME"
 }
 
 function help() {
