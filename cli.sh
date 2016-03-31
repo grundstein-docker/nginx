@@ -13,7 +13,7 @@ source ../../bin/tasks.sh
 echo "container: $CONTAINER_NAME"
 
 function build {
-  echo "build $CONTAINER_NAME"
+  echo-start "build"
 
   nginx-build
   magic-build
@@ -26,13 +26,13 @@ function build {
     --build-arg="VERSION=$VERSION" \
     . # dot!
 
-  echo "build done"
+  echo-finished "build"
 }
 
 function run() {
   remove
 
-  echo "starting container"
+  echo-start "run"
 
   docker run \
     --detach \
@@ -41,10 +41,12 @@ function run() {
     --publish $HOST_PORT_443:$CONTAINER_PORT_443 \
     --volume $DATA_DIR/nginx/logs:$TARGET_DIR/logs \
     $CONTAINER_NAME
+
+  echo-finished "run"
 }
 
 function nginx-build() {
-  echo "building nginx config sources"
+  echo-start "build"
 
   gitlab_ip_file=$GITLAB_DIR/SERVER_IP
   gitlab_name_file=$GITLAB_DIR/SERVER_NAME
@@ -106,11 +108,13 @@ function nginx-build() {
   else
     echo "FAIL: $server_ip_file does not exist"
   fi
+
+  echo-finished "Gitlab and Redis Config build"
 }
 
 
 function magic-build() {
-  echo "start magic build"
+  echo-start "magic build"
 
   for host_dir in $(ls $HOSTS_DIR); do \
     full_dir=$HOSTS_DIR/$host_dir
@@ -150,31 +154,31 @@ function magic-build() {
     fi
   done
 
-  echo "finished magic-build"
+  echo-finished "magic-build"
 }
 
 function clean() {
-  echo "cleaning up $CONTAINER_NAME"
+  echo-start "cleaning up"
 
   rm -rf ./out
 
-  echo "cleanup finished"
+  echo-finished "cleanup"
 }
 
 function update() {
-  echo "git pull $CONTAINER_NAME"
+  echo-start "git pull"
 
   git pull
 
-  echo "git pull $CONTAINER_NAME finished"
+  echo-finished "git pull"
 }
 
 function status() {
-  echo "git status $CONTAINER_NAME"
+  echo-start "status"
 
   git status
 
-  echo "finished git status for $CONTAINER_NAME"
+  echo-finished "status"
 }
 
 function help() {
