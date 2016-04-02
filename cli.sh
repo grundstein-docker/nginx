@@ -69,10 +69,10 @@ function nginx-build() {
         -e "s/|SERVER_NAME|/$gitlab_name/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/gitlab
 
-      echo "SUCCESS: gitlab nginx config build finished"
+      echo-success "gitlab nginx config build finished"
 
     else
-      echo "FAIL: $server_name_file does not exist"
+      echo-fail "$server_name_file does not exist"
     fi
 
   else
@@ -99,14 +99,14 @@ function nginx-build() {
         -e "s/|SERVER_NAME|/$redmine_name/g" \
         $SRC_DIR/sites-enabled/nginx > $OUT_DIR/sites-enabled/redmine
 
-      echo "SUCCESS: redmine nginx config build finished"
+      echo-success "redmine nginx config build finished"
 
     else
-      echo "FAIL: $server_name_file does not exist"
+      echo-fail "$server_name_file does not exist"
     fi
 
   else
-    echo "FAIL: $server_ip_file does not exist"
+    echo-fail "$server_ip_file does not exist"
   fi
 
   echo-finished "Gitlab and Redis Config build"
@@ -135,22 +135,22 @@ function magic-build() {
               -e "s/|SERVER_NAME|/$(cat $server_name_file)/g" \
               $conf_file > $out_file
 
-            echo "SUCCESS: nginx magic host config build finished"
+            echo-success "nginx magic host config build finished"
 
           else
-            echo "FAIL: $server_name_file does not exist"
+            echo-fail "$server_name_file does not exist"
           fi
 
         else
-          echo "FAIL: $server_ip_file does not exist"
+          echo-fail "$server_ip_file does not exist"
         fi
 
       else
-        echo "FAIL: $conf_file does not exist"
+        echo-fail "$conf_file does not exist"
       fi
 
     else
-      echo "FAIL: $full_dir is not a dir"
+      echo-fail "$full_dir is not a dir"
     fi
   done
 
