@@ -1,10 +1,10 @@
 # grundstein/nginx dockerfile
 # VERSION 0.0.1
 
-FROM alpine:3.3
+FROM alpine:3.4
 
 MAINTAINER Wizards & Witches <dev@wiznwit.com>
-ENV REFRESHED_AT 2016-29-03
+ENV REFRESHED_AT 2016-29-10
 
 ARG TARGET_DIR
 ARG VERSION
