@@ -7,6 +7,8 @@ HOSTS_DIR="$PWD/../magic/hosts"
 GITLAB_DIR="$PWD/../gitlab"
 REDMINE_DIR="$PWD/../redmine"
 
+IP=172.18.0.5
+
 source ./ENV.sh
 source ../../bin/tasks.sh
 
@@ -16,7 +18,7 @@ function build {
   echo-start "build"
 
   nginx-build
-  magic-build
+  # magic-build
 
   docker build \
     --tag=$CONTAINER_NAME \
@@ -40,7 +42,11 @@ function run() {
     --publish $HOST_PORT_80:$CONTAINER_PORT_80 \
     --publish $HOST_PORT_443:$CONTAINER_PORT_443 \
     --volume $DATA_DIR/nginx/logs:$TARGET_DIR/logs \
+    --net user-defined \
+    --ip $IP \
     $CONTAINER_NAME
+
+  ip $IP
 
   echo-finished "run"
 }
