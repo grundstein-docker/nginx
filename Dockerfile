@@ -4,10 +4,10 @@
 FROM alpine:3.4
 
 MAINTAINER Wizards & Witches <dev@wiznwit.com>
-ENV REFRESHED_AT 2016-29-10
+ENV REFRESHED_AT 18-11-2016
 
-ARG TARGET_DIR
-ARG VERSION
+ENV VERSION 1.10.1
+ENV WORKDIR /home/nginx
 
 # Build Nginx from source
 RUN apk --update add openssl-dev pcre-dev zlib-dev build-base curl
@@ -18,11 +18,11 @@ RUN curl -Ls http://nginx.org/download/nginx-${VERSION}.tar.gz | tar -xz -C /tmp
     ./configure \
         --with-http_ssl_module \
         --with-http_gzip_static_module \
-        --prefix=${TARGET_DIR} \
-        --conf-path=${TARGET_DIR}/conf/nginx.conf \
-        --http-log-path=${TARGET_DIR}/logs/access.log \
-        --error-log-path=${TARGET_DIR}/logs/error.log \
-        --pid-path=${TARGET_DIR}/nginx.pid \
+        --prefix=${WORKDIR} \
+        --conf-path=${WORKDIR}/conf/nginx.conf \
+        --http-log-path=${WORKDIR}/logs/access.log \
+        --error-log-path=${WORKDIR}/logs/error.log \
+        --pid-path=${WORKDIR}/nginx.pid \
         --sbin-path=/usr/sbin/nginx &&\
     make && \
     make install
@@ -33,15 +33,14 @@ RUN apk del build-base && \
 
 RUN echo -ne "- with `nginx -v 2>&1`\n" >> /root/.built
 
-# add sources
-COPY ./out ${TARGET_DIR}/conf/
+# add config
+COPY ./conf/ ${WORKDIR}/conf/
 
-ARG PORT_80
-ARG PORT_443
+COPY entrypoint.sh ${WORKDIR}/entrypoint.sh
+RUN chmod +x ${WORKDIR}/entrypoint.sh
 
-# Expose ports
-EXPOSE ${PORT_80} ${PORT_443}
+WORKDIR ${WORKDIR}
 
-WORKDIR ${TARGET_DIR}
+ENTRYPOINT ${WORKDIR}/entrypoint.sh
 
 CMD ["nginx", "-g", "daemon off;"]
